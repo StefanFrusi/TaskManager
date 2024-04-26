@@ -37,10 +37,10 @@ return new ResponseEntity<>(taskCategoryDto, HttpStatus.OK);
         return new ResponseEntity<>(taskCategoriesDto, HttpStatus.OK);
     }
     @PostMapping("/addTask")
-    public ResponseEntity<ResponseDto> addTask(@RequestBody @Valid TaskDto taskDto, @RequestParam(name = "taskCategoryId") Long taskCategoryId)
+    public ResponseEntity<TaskDto> addTask(@RequestBody @Valid TaskDto taskDto, @RequestParam(name = "taskCategoryId") Long taskCategoryId)
     {
-        taskService.addTask(taskDto,taskCategoryId);
-        return new ResponseEntity<>(new ResponseDto("The task has been successfully added"),HttpStatus.OK);
+        TaskDto addedTask=taskService.addTask(taskDto,taskCategoryId);
+        return new ResponseEntity<>(addedTask,HttpStatus.OK);
     }
     @GetMapping("/getTasks")
     public ResponseEntity<List<TaskDto>> getTasks(@RequestParam(name = "taskCategoryId") Long id)
@@ -49,16 +49,16 @@ return new ResponseEntity<>(taskCategoryDto, HttpStatus.OK);
         return new ResponseEntity<>(tasks,HttpStatus.OK);
     }
     @PatchMapping("/updateTask")
-    public ResponseEntity<ResponseDto> updateTask(@RequestBody @Valid  TaskDto taskDto)
+    public ResponseEntity<TaskDto> updateTask(@RequestBody @Valid  TaskDto taskDto)
     {
-        taskService.updateTask(taskDto);
-        return new ResponseEntity<>(new ResponseDto("The task has been updated"),HttpStatus.OK);
+        TaskDto updatedTask=taskService.updateTask(taskDto);
+        return new ResponseEntity<>(updatedTask,HttpStatus.OK);
     }
     @PatchMapping("/updateCategory")
-    public ResponseEntity<ResponseDto> updateCategory(@RequestBody @Valid  TaskCategoryDto taskCategoryDto)
+    public ResponseEntity<TaskCategoryDto> updateCategory(@RequestBody @Valid  TaskCategoryDto taskCategoryDto)
     {
-        taskService.updateCategory(taskCategoryDto);
-        return new ResponseEntity<>(new ResponseDto("The category has been successfully updated"),HttpStatus.OK);
+        TaskCategoryDto updatedTaskCategory=taskService.updateCategory(taskCategoryDto);
+        return new ResponseEntity<>(updatedTaskCategory,HttpStatus.OK);
     }
 
 }

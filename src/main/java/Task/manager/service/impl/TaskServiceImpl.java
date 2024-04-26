@@ -50,7 +50,7 @@ return TaskMapper.toTaskCategoryDto(addedTaskCategory);
 
 
     }
-    public void addTask(TaskDto taskDto,Long taskCategoryId)
+    public TaskDto addTask(TaskDto taskDto,Long taskCategoryId)
     {Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         if(!(authentication instanceof UsernamePasswordAuthenticationToken))
             throw new GlobalException("You are not authenticated", HttpStatus.BAD_REQUEST);
@@ -61,7 +61,8 @@ return TaskMapper.toTaskCategoryDto(addedTaskCategory);
         Task task= TaskMapper.toTask(taskDto);
         task.setEmail(email);
         task.setTaskCategoryId(taskCategoryId);
-        taskRepository.save(task);
+        TaskDto savedTask= TaskMapper.toTaskDto(taskRepository.save(task));
+        return (savedTask);
     }
     public List<TaskDto> getTasks(Long id)
     { Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
@@ -87,7 +88,7 @@ return TaskMapper.toTaskCategoryDto(addedTaskCategory);
 
 
     }
-    public void updateTask(TaskDto taskDto)
+    public TaskDto updateTask(TaskDto taskDto)
     {
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         if(!(authentication instanceof UsernamePasswordAuthenticationToken))
@@ -102,10 +103,11 @@ return TaskMapper.toTaskCategoryDto(addedTaskCategory);
         newTask.setTitle(taskDto.getTitle());
         newTask.setDescription(taskDto.getDescription());
         newTask.setDueTo(taskDto.getDueTo());
-        taskRepository.save(newTask);
+        TaskDto savedTask=TaskMapper.toTaskDto(taskRepository.save(newTask));
+        return savedTask;
 
     }
-    public void updateCategory(TaskCategoryDto taskCategoryDto)
+    public TaskCategoryDto updateCategory(TaskCategoryDto taskCategoryDto)
     { if(taskCategoryDto.getId()==null)
         throw  new GlobalException("Please provide the id of the category you want to change",HttpStatus.BAD_REQUEST);
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
@@ -117,7 +119,8 @@ return TaskMapper.toTaskCategoryDto(addedTaskCategory);
             throw new GlobalException("The category with the id:"+ taskCategoryDto.getId()+ "does not exist",HttpStatus.BAD_REQUEST);
         TaskCategory newTaskCategory=taskCategory.get();
         newTaskCategory.setName(taskCategoryDto.getName());
-        taskCategoryRepository.save(newTaskCategory);
+        TaskCategoryDto savedTaskCategoryDto=TaskMapper.toTaskCategoryDto(taskCategoryRepository.save(newTaskCategory));
+          return savedTaskCategoryDto;
     }
     public void deleteTask(Long id)
     {
