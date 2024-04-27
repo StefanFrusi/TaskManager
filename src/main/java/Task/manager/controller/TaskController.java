@@ -60,5 +60,4 @@ return new ResponseEntity<>(taskCategoryDto, HttpStatus.OK);
         TaskCategoryDto updatedTaskCategory=taskService.updateCategory(taskCategoryDto);
         return new ResponseEntity<>(updatedTaskCategory,HttpStatus.OK);
     }
-
 }

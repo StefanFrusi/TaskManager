@@ -123,11 +123,28 @@ return TaskMapper.toTaskCategoryDto(addedTaskCategory);
           return savedTaskCategoryDto;
     }
     public void deleteTask(Long id)
-    {
-// IMPLEMENT THE LOGIC OF DELETING A TASK
+     { if(id==null)
+         throw new GlobalException("Please provide the id of the task you want to delete",HttpStatus.BAD_REQUEST);
+         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+         if(!(authentication instanceof UsernamePasswordAuthenticationToken))
+             throw new GlobalException("You are not authenticated", HttpStatus.BAD_REQUEST);
+         String email =authentication.getName();
+         Optional<Task> DBTAsk=taskRepository.findById(id);
+         if(DBTAsk.isEmpty()|| !Objects.equals(DBTAsk.get().getEmail(), email))
+             throw new GlobalException("The task with the id: "+id+" does not exist",HttpStatus.BAD_REQUEST);
+        taskRepository.deleteById(id);
     }
     public void deleteCategory(Long id)
-    {
-        //IMPLEMENT THE LOGIC OF DELETING THE CATEGORY AND ITS ASSOCIATED TASKS
+    {if(id==null)
+        throw new GlobalException("Please provide the id of the category you want to delete",HttpStatus.BAD_REQUEST);
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        if(!(authentication instanceof UsernamePasswordAuthenticationToken))
+            throw new GlobalException("You are not authenticated", HttpStatus.BAD_REQUEST);
+        String email =authentication.getName();
+        Optional<TaskCategory> taskCategoryDB= taskCategoryRepository.findById(id);
+        if(taskCategoryDB.isEmpty()|| !Objects.equals(taskCategoryDB.get().getEmail(), email))
+            throw new GlobalException("The task category with the id: "+id+" does not exist",HttpStatus.BAD_REQUEST);
+        taskCategoryRepository.deleteById(id);
+        taskRepository.deleteAllByTaskCategoryId(id);
     }
 }
