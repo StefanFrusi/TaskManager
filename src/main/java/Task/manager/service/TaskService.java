@@ -12,4 +12,6 @@ public interface TaskService {
     List<TaskDto> getTasks(Long id);
     TaskDto updateTask(TaskDto taskDto);
     TaskCategoryDto updateCategory(TaskCategoryDto taskCategoryDto);
+     void deleteTask(Long id);
+    void deleteCategory(Long id);
 }

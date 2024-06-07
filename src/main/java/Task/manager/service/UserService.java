@@ -9,4 +9,6 @@ public interface UserService {
     void register(UserDto userDto);
     void login(LoginDto loginDto, HttpServletRequest request, HttpServletResponse response);
     boolean isAuthenticated(HttpServletRequest request);
+
+    void logout(HttpServletRequest request, HttpServletResponse response);
 }

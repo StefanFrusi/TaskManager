@@ -80,7 +80,8 @@ return TaskMapper.toTaskCategoryDto(addedTaskCategory);
     public List<TaskCategoryDto> getTaskCategories()
     {Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         if(!(authentication instanceof UsernamePasswordAuthenticationToken))
-            throw new GlobalException("You are not authenticated", HttpStatus.BAD_REQUEST);
+        { System.out.println("the code has reached here ");
+            throw new GlobalException("You are not authenticated", HttpStatus.BAD_REQUEST);}
         String email =authentication.getName();
         Optional<List<TaskCategory>> taskCategories= taskCategoryRepository.findAllByEmail(email);
         List<TaskCategoryDto> taskCategoriesDto= TaskMapper.toTaskCategoryDtoList(taskCategories.get());

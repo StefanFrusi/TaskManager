@@ -4,6 +4,7 @@ import Task.manager.Entity.Task;
 import Task.manager.dto.ResponseDto;
 import Task.manager.dto.TaskCategoryDto;
 import Task.manager.dto.TaskDto;
+import Task.manager.repository.TaskRepository;
 import Task.manager.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +20,24 @@ import java.util.List;
 @Validated
 public class TaskController {
     private final TaskService taskService;
+    private final TaskRepository taskRepository;
+
     @Autowired
-    TaskController(TaskService taskService)
+    TaskController(TaskService taskService, TaskRepository taskRepository)
     {
         this.taskService = taskService;
+        this.taskRepository = taskRepository;
     }
     @PostMapping("/addCategory")
     public ResponseEntity<TaskCategoryDto> addCategory(@RequestParam(name="taskCategoryName") String name)
     {
 TaskCategoryDto taskCategoryDto=taskService.addCategory(name);
 return new ResponseEntity<>(taskCategoryDto, HttpStatus.OK);
+    }
+    @DeleteMapping("/deleteTask")
+    public ResponseEntity<String> deleteTask(@RequestParam(name="taskId")Long taskId)
+    {   taskService.deleteTask(taskId);
+        return new ResponseEntity<>("The task has been deleted", HttpStatus.OK);
     }
     @GetMapping ("/getCategories")
         public ResponseEntity<List<TaskCategoryDto>> getCategories()
@@ -59,5 +68,11 @@ return new ResponseEntity<>(taskCategoryDto, HttpStatus.OK);
     {
         TaskCategoryDto updatedTaskCategory=taskService.updateCategory(taskCategoryDto);
         return new ResponseEntity<>(updatedTaskCategory,HttpStatus.OK);
+    }
+    @DeleteMapping("/deleteCategory")
+    public ResponseEntity<String> deleteCategory(@RequestParam Long taskCategoryId)
+    {
+        taskService.deleteCategory(taskCategoryId);
+        return new ResponseEntity<>("The Category has been deleted",HttpStatus.OK);
     }
 }

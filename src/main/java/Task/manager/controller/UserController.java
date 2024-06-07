@@ -35,6 +35,12 @@ UserService userService;
     { userService.login(loginDto,request,response);
         return new ResponseEntity<>(new ResponseDto("you have been successfully logged in"),HttpStatus.OK);
     }
+    @PostMapping("/logout")
+    public ResponseEntity<ResponseDto> logout(HttpServletRequest request, HttpServletResponse response)
+    {
+        userService.logout(request,response);
+        return new ResponseEntity<>(new ResponseDto("you have been successfully logged out"),HttpStatus.OK);
+    }
     @GetMapping("/csrf/token")
     public CsrfToken csrf(CsrfToken token)
     {
